@@ -284,9 +284,8 @@
         "activate": "relu"
     },
     "44":{
-        "type": "cnn_decode",
+        "type": "output",
         "in_channels": 64,
-        "out_channels": 2,
         "kernel_size": 1,
         "padding": 0,
         "stride": 1
