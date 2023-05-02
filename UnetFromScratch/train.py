@@ -33,10 +33,11 @@ device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 datasets = {phase[0]: BuildData(phase[1], mode="train") for phase in [('train',train), ('valid', valid)]}
 
 epochs = 2
+input_channels = 1
 num_classes = 1
 batch_size = 4
 
-model = Unet(model_configs, num_classes=num_classes)
+model = Unet(model_configs, input_channels=input_channels, num_classes=num_classes)
 model = model.to(device)
 optimizer = torch.optim.Adam(model.parameters(), lr=0.0005)
 lossFunc = BCEWithLogitsLoss()

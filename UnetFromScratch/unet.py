@@ -4,10 +4,11 @@ import torchvision.transforms as transforms
 import json
 
 class Unet(nn.Module):
-    def __init__(self, model_configs, num_classes):
+    def __init__(self, model_configs, input_channels, num_classes):
         super(Unet, self).__init__()
         self.model_configs = model_configs
         self.num_classes = num_classes
+        self.input_channels = input_channels
         self.net, self.decoder_layers = self.convnet(self.model_configs)
         # (inp - fil + 2*pad)/str + 1 
     def convnet(self, model_configs):
@@ -17,6 +18,15 @@ class Unet(nn.Module):
             layers = []
             if configs['type'] in ["cnn_encode", 'cnn_decode']:
                 in_channels = configs['in_channels']
+                out_channels = configs['out_channels']
+                kernel_size = configs['kernel_size']
+                padding = configs['padding']
+                stride = configs['stride']
+                layers.append(nn.Conv2d(in_channels=in_channels,out_channels=out_channels,
+                                        kernel_size=kernel_size, padding=padding, stride=stride))
+                
+            if configs['type'] == 'input':
+                in_channels = self.input_channels
                 out_channels = configs['out_channels']
                 kernel_size = configs['kernel_size']
                 padding = configs['padding']
@@ -79,6 +89,6 @@ if __name__ == "__main__":
         model_configs = json.load(config_file)
 
     image = torch.rand((1, 1, 572, 572))
-    unet_model = Unet(model_configs, num_classes=1)
+    unet_model = Unet(model_configs, input_channels=1, num_classes=1)
     out = unet_model(image)
     print(out.shape)

@@ -1,7 +1,6 @@
 {
     "0": {
-        "type": "cnn_encode",
-        "in_channels": 1,
+        "type": "input",
         "out_channels": 64,
         "kernel_size": 3, 
         "padding": 0,
