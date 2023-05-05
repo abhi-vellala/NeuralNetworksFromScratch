@@ -53,12 +53,15 @@ figure2, ax2 = plt.subplots()
 ax2.set_title("Loss Vs Epochs Updating...")
 
 losses = []
-bs = []
 phase = "train"
-bs_count = batch_size
+
 for epoch in range(epochs):
     running_loss = 0
+    bs_count = 0
+    bs = []
+    batch_losses = []
     for images, mask in dataload[phase]:
+        ax1.clear()
         images = images.to(device)
         mask = mask.to(device)
         pred = model(images)
@@ -66,23 +69,25 @@ for epoch in range(epochs):
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
-        losses.append(loss.item())
+        batch_losses.append(loss.item())
         bs.append(bs_count)
-        ax1.scatter(bs, losses, marker="o", c="red")
-        ax1.plot(bs, losses, label="Loss", c="black")
+        ax1.scatter(bs, batch_losses, marker="o", c="red")
+        ax1.plot(bs, batch_losses, label="Loss", c="black")
         ax1.set_xlabel("Batch Size")
         ax1.set_ylabel("Loss")
-        ax1.set_title("Loss vs Batch Size")
+        ax1.set_title(f"Loss vs Batch Size for epoch: {epoch+1}")
         figure1.canvas.draw()
         figure1.canvas.flush_events()
         time.sleep(0.1)
         # plt.show(block=False)
         print(f"Epoch: {epoch+1}/{epochs}, Batch: {bs_count}/{len(dataload[phase])} Loss: {loss.item()}")
-        bs_count += batch_size
+        bs_count += 1
         running_loss += loss.item()
         
-    ax2.scatter(range(epoch+1), running_loss, marker="o", c="red")
-    ax2.plot(range(epoch+1), running_loss, label="Loss", c="black")
+    losses.append(running_loss)
+    print(f"Running Loss: {running_loss}")
+    ax2.scatter(np.arange(0,epoch+1,dtype=int), losses, marker="o", c="red")
+    ax2.plot(np.arange(0,epoch+1,dtype=int), losses, label="Loss", c="black")
     ax2.set_xlabel("Epochs")
     ax2.set_ylabel("Loss")
     ax2.set_title("Loss vs Epochs")
@@ -90,3 +95,4 @@ for epoch in range(epochs):
     figure2.canvas.flush_events()
     time.sleep(0.1)
 
+print(f"Final Loss: {running_loss}")
