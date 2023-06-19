@@ -1,0 +1,7 @@
+**/UnetFromScratch/data/images
+**/UnetFromScratch/data/masks
+UnetFromScratch/unet_explain_figs/
+**__pycache__/
+**/AlexnetFromScratch/all_figs/
+AlexnetFromScratch/data/rsna-pneumonia-detection-challenge_data
+/AlexnetFromScratch/model_weights/

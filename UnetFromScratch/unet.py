@@ -9,6 +9,7 @@ class Unet(nn.Module):
         self.model_configs = model_configs
         self.num_classes = num_classes
         self.input_channels = input_channels
+        self.explain_output = {}
         self.net, self.decoder_layers = self.convnet(self.model_configs)
         # (inp - fil + 2*pad)/str + 1 
     def convnet(self, model_configs):
@@ -78,7 +79,8 @@ class Unet(nn.Module):
                     x = torch.cat([x_get,x], dim=1)
                     x = layer(x)
             else:
-                x = layer(x)            
+                x = layer(x)
+            self.explain_output[layer] = (idx, x)
         return x     
     
     
@@ -92,3 +94,4 @@ if __name__ == "__main__":
     unet_model = Unet(model_configs, input_channels=1, num_classes=1)
     out = unet_model(image)
     print(out.shape)
+    print(unet_model.explain_output)

@@ -80,11 +80,17 @@ class LoadData:
     
     def load(self):
         dataloaded = {}
-        for phase in ['train', 'valid']:
-            loader = torch.utils.data.DataLoader(dataset=self.datasets[phase], 
-                                                 batch_size=self.batch_size, shuffle=self.shuffle,
-                                                 num_workers=self.num_workers)
-            dataloaded[phase] = loader
+        try:
+            for phase in ['train', 'valid']:
+                loader = torch.utils.data.DataLoader(dataset=self.datasets[phase], 
+                                                    batch_size=self.batch_size, shuffle=self.shuffle,
+                                                    num_workers=self.num_workers)
+                dataloaded[phase] = loader
+        except:
+            loader = torch.utils.data.DataLoader(dataset=self.datasets, 
+                                                    batch_size=self.batch_size, shuffle=self.shuffle,
+                                                    num_workers=self.num_workers)
+            dataloaded = loader
         return dataloaded
 
 
