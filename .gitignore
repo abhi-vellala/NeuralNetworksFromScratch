@@ -5,3 +5,4 @@ UnetFromScratch/unet_explain_figs/
 **/AlexnetFromScratch/all_figs/
 AlexnetFromScratch/data/rsna-pneumonia-detection-challenge_data
 /AlexnetFromScratch/model_weights/
+**.mp4
